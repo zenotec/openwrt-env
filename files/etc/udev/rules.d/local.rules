@@ -1,0 +1,12 @@
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", ATTRS{serial}=="DA00ONY4", SYMLINK+="input/DoProbe"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", ATTRS{serial}=="DA00TWIM", SYMLINK+="input/EcProbe"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", ATTRS{serial}=="DA00ONXS", SYMLINK+="input/PhProbe"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", ATTRS{serial}=="DA00TSQ8", SYMLINK+="input/PhProbe"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", ATTRS{serial}=="DA00ONXO", SYMLINK+="input/FloMeter"
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="fc73", ATTRS{product}=="CANA KIT UK1104", SYMLINK+="input/CanaKit1104"
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="239a", ATTRS{idProduct}=="0001", ATTRS{product}=="Adafruit Industries", SYMLINK+="input/AdaLcd"
+
+
