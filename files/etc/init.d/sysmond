@@ -1,0 +1,14 @@
+#!/bin/sh /etc/rc.common
+#Init script for sysmond
+
+START=80
+
+start() {
+    #----------- START the UDEV daemon --------------
+    /usr/bin/sysmond &
+    }
+
+stop() {
+    killall sysmond
+}
+
