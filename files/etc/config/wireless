@@ -14,6 +14,5 @@ config wifi-iface
 	option encryption 'psk2'
 	option device 'radio0'
 	option mode 'sta'
-	option bssid '60:31:97:84:FA:2A'
 	option key 'DEADBEEF'
 

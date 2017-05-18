@@ -1,45 +1,44 @@
 #!/bin/sh
 
-USAGE="$(basename ${0}) TEMPERATURE (C)"
-ADDR="192.168.10.20"
-LOCK="/var/run/Canakit"
+USAGE="$(basename ${0}) [TANK1|TANK2] TEMPERATURE (C)"
 
-if [ ${#} -ne 1 ]; then
+if [ ${#} -ne 2 ]; then
   echo "Missing arguments"
   echo "${USAGE}"
   exit 1
 fi
 
-ping -qc 1 ${ADDR} > /dev/null
-ret=${?}
-if [ ${ret} -ne 0 ]; then
-  echo "Host ${ADDR} is MIA"
+ID=${1}
+SET_TEMP=${2}
+AMB_TEMP=$(sysmon_cli -c temp -o 4)
+
+CMD_STR="sysmon_cli -c relay"
+
+if [ "x${ID}x" == "xTANK1x" ]; then
+  CMD_STR="${CMD_STR} -o channel=3"
+  TANK_TEMP=$(sysmon_cli -c temp -o 5)
+  CMP=$(echo "${SET_TEMP} >= ${TANK_TEMP}" | bc)
+elif [ "x${ID}x" == "xTANK2x" ]; then
+  CMD_STR="${CMD_STR} -o channel=4"
+  TANK_TEMP=$(sysmon_cli -c temp -o 6)
+  CMP=$(echo "${SET_TEMP} >= ${TANK_TEMP}" | bc)
+else
+  echo "Unsupported identifier: ${ID}"
+  echo "${USAGE}"
   exit 1
 fi
 
-SET_TEMP=${1}
+if [ ${CMP} -eq 1 ]; then
+  CMD_STR="${CMD_STR} -o state=on"
+  echo "$(date '+%D,%T'), ${AMB_TEMP}, ${ID}, ON, ${SET_TEMP}, ${TANK_TEMP}"
+else
+  CMD_STR="${CMD_STR} -o state=off"
+  echo "$(date '+%D,%T'), ${AMB_TEMP}, ${ID}, OFF, ${SET_TEMP}, ${TANK_TEMP}"
+fi
 
-# Tank 1
 
-TANKS="1 2"
+STATUS=0
+OUTPUT=$(${CMD_STR})
 
-for TANK in ${TANKS}; do
-  OUTPUT=$(temp.sh TANK${TANK})
-  SENSOR=$(echo ${OUTPUT} | awk -F, '{print $3}')
-  TEMP=$(echo ${OUTPUT} | awk -F, '{print $4}')
-  if [ "x${SENSOR}x" == "xx" ] || [ "x${TEMP}x" == "xx" ]; then
-    echo "Failed to read temperature: ${OUTPUT}"
-    ${0} ${1}
-    exit ${?}
-  fi
-  CMP=$(echo "${SET_TEMP} >= ${TEMP}" | bc)
-  if [ ${CMP} -eq 1 ]; then
-    echo "$(date '+%D,%T'),TANK${TANK},ON,${SET_TEMP},${TEMP}"
-    heater.sh TANK${TANK} OFF > /dev/null
-  else
-    echo "$(date '+%D,%T'),TANK${TANK},OFF,${SET_TEMP},${TEMP}"
-    heater.sh TANK${TANK} ON > /dev/null
-  fi
-done
+exit ${STATUS}
 
-exit 0

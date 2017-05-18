@@ -2,11 +2,11 @@
 config system
 	option ttylogin '0'
 	option hostname 'ZenoPonics'
-	option zonename 'UTC'
-	option timezone 'GMT0'
 	option log_proto 'udp'
 	option conloglevel '8'
 	option cronloglevel '8'
+	option zonename 'America/Denver'
+	option timezone 'MST7MDT,M3.2.0,M11.1.0'
 
 config timeserver 'ntp'
 	list server '0.openwrt.pool.ntp.org'

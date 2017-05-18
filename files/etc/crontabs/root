@@ -1,0 +1,10 @@
+*/5 0-7,20-23 * * * sleep 1; /usr/sbin/light.sh GB1 ON >> /var/log/GB1.log && echo "$(date), ON" >> /var/log/GB1.log
+*/5 0-7,20-23 * * * sleep 3; /usr/sbin/light.sh GB2 ON >> /var/log/GB2.log && echo "$(date), ON" >> /var/log/GB2.log
+*/5 0-7,20-23 * * * sleep 5; /usr/sbin/adj_temp.sh TANK1 $(cat /etc/night_temp.conf) >> /var/log/adj_temp.log
+*/5 0-7,20-23 * * * sleep 7; /usr/sbin/adj_temp.sh TANK2 $(cat /etc/night_temp.conf) >> /var/log/adj_temp.log
+
+*/5 08-19 * * * sleep 1; /usr/sbin/light.sh GB1 OFF >> /var/log/GB1.log && echo "$(date), OFF" >> /var/log/GB1.log
+*/5 08-19 * * * sleep 3; /usr/sbin/light.sh GB2 OFF >> /var/log/GB2.log && echo "$(date), OFF" >> /var/log/GB2.log
+*/5 08-19 * * * sleep 5; /usr/sbin/adj_temp.sh TANK1 $(cat /etc/day_temp.conf) >> /var/log/adj_temp.log
+*/5 08-19 * * * sleep 7; /usr/sbin/adj_temp.sh TANK2 $(cat /etc/day_temp.conf) >> /var/log/adj_temp.log
+
