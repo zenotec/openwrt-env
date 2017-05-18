@@ -14,8 +14,7 @@ config interface 'lan'
 	option ifname 'eth0'
 	option proto 'dhcp'
 
-config interface 'wlan'
-	option _orig_ifname 'wlan0'
-	option _orig_bridge 'false'
+config interface 'wwan'
 	option proto 'dhcp'
+	option hostname 'ZenoPonics'
 
